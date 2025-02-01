@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI Financial Advisor: Analyze your spending and make smarter financial decisions with our AI-powered tool.">
+    <title>AI Financial Advisor</title>
+
+    <!-- Font Awesome Icons --> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    
+    <!-- External CSS -->
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <!-- Navigation -->
+     <nav>
+        <div class="nav-container">
+                <div class="logo"> 
+                    <span class="vector">Vector</span><span class="blink">Z</span>            
+                </div>
+            <div class="hamburger" onclick="toggleNav()">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            <div class="nav-links">
+                <a href="#">Home</a>
+                <a href="#features">Features</a>
+                <a href="./about/about.html">About</a>
+                <a href="./contact/index.html">Contact</a>
+            </div>
+        </div>
+    </nav>
+    <!-- <-- Hero Section with Slider --> 
+    <section class="hero" id="home">
+        <div class="slider">
+            <div class="slide active">
+                <div class="slide-content">
+                    <h1>Take Control of Your Finances</h1>
+                    <p>Our AI-powered financial advisor analyzes your spending patterns and helps you make smarter financial decisions.</p>
+                    <a href="http://127.0.0.1:5000"  class="cta-button">Check Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Features Section -->
+    <!-- Features Section -->
+<section class="features" id="features">
+    <div class="features-container">
+        <div class="feature-card">
+            <a href="./feature/smart.html">
+                <i class="fas fa-chart-line"></i>
+                <h3>Smart Budget Analysis</h3>
+                <p>Our AI analyzes your spending patterns and suggests personalized budgeting strategies to help you save more.</p>
+            </a>
+        </div>
+        <div class="feature-card">
+            <a href="./feature/saving.html  ">
+                <i class="fas fa-piggy-bank"></i>
+                <h3>Savings Goals</h3>
+                <p>Set and track your savings goals with intelligent recommendations on how to achieve them faster.</p>
+            </a>
+        </div>
+        <div class="feature-card">
+            <a href="./feature/secure.html">
+                <i class="fas fa-shield-alt"></i>
+                <h3>Secure Integration</h3>
+                <p>Bank-level security with Plaid API integration ensures your financial data is always protected.</p>
+            </a>
+        </div>
+    </div>
+</section>
+<div id="flask-message"></div>
+<button id="sendButton">Send Data to Backend</button>
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#careers">Careers</a></li>
+                    <li><a href="#press">Press</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="#blog">Blog</a></li>
+                    <li><a href="#guides">Financial Guides</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <ul>
+                    <li><a href="#support">Support</a></li>
+                    <li><a href="#sales">Sales</a></li>
+                    <li><a href="#partnerships">Partnerships</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 AI Financial Advisor. All rights reserved.</p>
+        </div>
+    </footer>
+    <!-- External JS -->
+    <script >
+        // Fetch data from Flask backend
+fetch('http://127.0.0.1:5000/api/data')
+    .then(response => response.json())
+    .then(data => {
+        console.log(data.message); // Display message in console
+        document.querySelector("#flask-message").innerText = data.message;
+    })
+    .catch(error => console.error("Error fetching data:", error));
+
+// Sending data to Flask
+document.querySelector("#sendButton").addEventListener("click", () => {
+    fetch('http://127.0.0.1:5000/api/send', {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ user_input: "Hello from Frontend!" })
+    })
+    .then(response => response.json())
+    .then(data => console.log(data.response))
+    .catch(error => console.error("Error sending data:", error));
+});
+
+
+
+// Mobile menu functionality
+const hamburger = document.querySelector('.hamburger');
+const navLinks = document.querySelector('.nav-links');
+const navLinksA = document.querySelectorAll('.nav-links a');
+
+hamburger.addEventListener('click', () => {
+    navLinks.classList.toggle('active');
+    hamburger.classList.toggle('active');
+});
+
+navLinksA.forEach(link => {
+    link.addEventListener('click', () => {
+        navLinks.classList.remove('active');
+        hamburger.classList.remove('active');
+    });
+});  
+// Slider functionality
+const slides = document.querySelectorAll('.slide');
+let currentSlide = 0;
+
+function showSlide(index) {
+    slides.forEach(slide => slide.classList.remove('active'));
+    slides[index].classList.add('active');
+}
+
+setInterval(() => {
+    currentSlide = (currentSlide + 1) % slides.length;
+    showSlide(currentSlide);
+}, 5000);
+
+// Smooth scrolling
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+        });
+    });
+});
+
+
+    </script>
+</body>
+</html> 
